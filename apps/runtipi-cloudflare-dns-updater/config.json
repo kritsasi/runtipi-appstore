@@ -3,7 +3,7 @@
   "name": "Runtipi Cloudflare DNS Updater"
   "id": "runtipi-cloudflare-dns-updater",
   "available": true,
-  "exposable": false,
+  "exposable": true,
   "dynamic_config": true,
   "short_desc": "Update DNS records on Cloudflare as Runtipi Platform.",
   "author": "Krit Sasi",
