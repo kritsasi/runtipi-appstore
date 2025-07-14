@@ -12,11 +12,15 @@
         "CF_DNS__ACCOUNTS__SCOPED_ZONE": "${CF_DNS__ACCOUNTS__SCOPED_ZONE}",
         "CF_DNS__ACCOUNTS__SCOPED_TUNNEL": "${CF_DNS__ACCOUNTS__SCOPED_TUNNEL}",
         "CF_DNS__DOMAINS_0__PROXIED": "${CF_DNS__DOMAINS_0__PROXIED}"
-      },
+      },/var/run/docker.sock
       "volumes": [
         {
           "hostPath": "./shell",
           "containerPath": "/tmp"
+        },
+        {
+          "hostPath": "./var/run/docker.sock",
+          "containerPath": "/var/run/docker.sock"
         }
       ]
     }
