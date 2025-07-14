@@ -10,8 +10,8 @@
   "port": 8485,
   "categories": ["utilities"],
   "description": "Runtipi Cloudflare DNS Updater is a Docker image that update DNS records on Cloudflare on schedule.",
-  "tipi_version": 1,
-  "version": "1.1.1",
+  "tipi_version": 8,
+  "version": "1.1.2",
   "source": "https://github.com/kritsasi/runtipi-cloudflare-dns-updater",
   "form_fields": [
     {
