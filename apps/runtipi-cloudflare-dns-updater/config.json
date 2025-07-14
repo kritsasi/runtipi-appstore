@@ -50,7 +50,8 @@
     {
       "type": "boolean",
       "label": "Proxy Enable",
-      "required": true,
+      "required": false,
+      "default" : true,
       "env_variable": "CF_DNS__DOMAINS_0__PROXIED"
     }
   ],
