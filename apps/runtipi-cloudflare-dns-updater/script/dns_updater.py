@@ -10,6 +10,8 @@ cf_tunnel_id = os.getenv("CF_DNS__ACCOUNTS__SCOPED_TUNNEL")
 cf_api_token = os.getenv("CF_DNS__AUTH__SCOPED_TOKEN")
 cf_proxy = os.getenv("CF_DNS__DOMAINS_0__PROXIED", "false").lower() == "true"
 
+print("Root Domain: {cf_domain}")
+
 headers = {
     "Authorization": f"Bearer {cf_api_token}",
     "Content-Type": "application/json"
