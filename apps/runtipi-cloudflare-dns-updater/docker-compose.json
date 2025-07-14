@@ -2,7 +2,7 @@
   "$schema": "../dynamic-compose-schema.json",
   "services": [
     {
-      "image": "alpine",
+      "image": "alpine:docker-events-listener",
       "name": "runtipi-cloudflare-dns-updater",
       "isMain": true,
       "environment": {
