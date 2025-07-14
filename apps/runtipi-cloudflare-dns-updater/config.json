@@ -26,7 +26,7 @@
     {
       "type": "password",
       "label": "Token",
-      "max": 40,
+      "max": 80,
       "min": 5,
       "required": true,
       "env_variable": "CF_DNS__AUTH__SCOPED_TOKEN"
@@ -34,7 +34,7 @@
     {
       "type": "password",
       "label": "Zone",
-      "max": 40,
+      "max": 80,
       "min": 5,
       "required": true,
       "env_variable": "CF_DNS__ACCOUNTS__SCOPED_ZONE"
@@ -42,7 +42,7 @@
     {
       "type": "password",
       "label": "Tunnel",
-      "max": 40,
+      "max": 80,
       "min": 5,
       "required": true,
       "env_variable": "CF_DNS__ACCOUNTS__SCOPED_TUNNEL"
