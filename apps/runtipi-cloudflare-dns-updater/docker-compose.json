@@ -15,7 +15,7 @@
       },
       "volumes": [
         {
-          "hostPath": "./shell",
+          "hostPath": "${APP_DATA_DIR}/shell",
           "containerPath": "/tmp"
         },
         {
