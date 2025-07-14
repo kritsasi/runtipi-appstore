@@ -15,6 +15,6 @@ services:
       - tipi_main_network
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
-      - ./shell:/tmp:ro
+      - ./shell/runtipi_cloudflare_dns_updater.sh:/tmp/runtipi_cloudflare_dns_updater.sh:ro
     labels:
       runtipi.managed: true
