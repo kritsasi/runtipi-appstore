@@ -14,7 +14,6 @@ services:
     networks:
       - tipi_main_network
     volumes:
-      - ${APP_DATA_DIR}/script:/
       - /var/run/docker.sock:/var/run/docker.sock
     labels:
       runtipi.managed: true
