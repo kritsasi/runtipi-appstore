@@ -17,7 +17,7 @@
   "form_fields": [
     {
       "type": "fqdn",
-      "label": "Domain",
+      "label": "Root Domain",
       "max": 50,
       "min": 3,
       "required": true,
