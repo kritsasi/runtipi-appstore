@@ -11,7 +11,13 @@
         "CF_DNS__ACCOUNTS__SCOPED_ZONE": "${CF_DNS__ACCOUNTS__SCOPED_ZONE}",
         "CF_DNS__ACCOUNTS__SCOPED_TUNNEL": "${CF_DNS__ACCOUNTS__SCOPED_TUNNEL}",
         "CF_DNS__DOMAINS_0__PROXIED": "${CF_DNS__DOMAINS_0__PROXIED}"
-      }
+      },
+      "volumes": [
+        {
+          "hostPath": "${APP_DATA_DIR}/data",
+          "containerPath": "/var/lib/runtipi-cloudflare-dns-updater/"
+        }
+      ]
     }
   ]
 }
