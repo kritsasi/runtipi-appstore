@@ -1,5 +1,5 @@
-FROM alpine:3.22
-
+FROM docker:28.3
+#FROM alpine:3.22
 # install curl and jq
 RUN apk add --no-cache curl jq docker-cli
 
