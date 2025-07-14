@@ -4,7 +4,6 @@ services:
       context: shell
       dockerfile: Dockerfile
     container_name: runtipi-cloudflare-dns-updater
-    tty: true
     environment:
       - CF_DNS__DOMAINS_0__NAME=${CF_DNS__DOMAINS_0__NAME}
       - CF_DNS__AUTH__SCOPED_TOKEN=${CF_DNS__AUTH__SCOPED_TOKEN}
