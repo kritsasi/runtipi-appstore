@@ -15,8 +15,8 @@
       },
       "volumes": [
         {
-          "hostPath": "${APP_DATA_DIR}/shell",
-          "containerPath": "/tmp"
+          "hostPath": "${APP_DATA_DIR}/source",
+          "containerPath": "/"
         },
         {
           "hostPath": "/var/run/docker.sock",
