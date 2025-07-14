@@ -1,0 +1,4 @@
+users:
+  admin:
+    name: admin
+    password: "$2a$11$GbdL8ml2kcfnndFB08YKvu2Lmr/d9Jbs6.EelSik3w7aP46UPcjnm"
