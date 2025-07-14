@@ -1,13 +1,13 @@
 FROM alpine:3.22
 
-# ติดตั้ง curl และ jq
+# install curl and jq
 RUN apk add --no-cache curl jq docker-cli
 
-# คัดลอก shell script ไปใน container
+# copy shell script into container
 COPY runtipi_cloudflare_dns_updater.sh /tmp/runtipi_cloudflare_dns_updater.sh
 
-# ให้สิทธิ์รัน shell script
+# add permission shell script
 RUN chmod +x /tmp/runtipi_cloudflare_dns_updater.sh
 
-# รัน shell script โดยใช้ environment ที่ส่งมาจาก docker-compose
+# run shell script with environment from docker-compose
 CMD ["/tmp/runtipi_cloudflare_dns_updater.sh"]
