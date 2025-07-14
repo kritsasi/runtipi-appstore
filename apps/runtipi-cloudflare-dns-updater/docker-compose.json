@@ -15,12 +15,8 @@
       },
       "volumes": [
         {
-          "hostPath": "./shell/runtipi_cloudflare_dns_updater.template",
-          "containerPath": "/tmp/runtipi_cloudflare_dns_updater.template"
-        },
-        {
-          "hostPath": "./shell/runtipi_cloudflare_dns_updater.sh",
-          "containerPath": "/tmp/runtipi_cloudflare_dns_updater.sh"
+          "hostPath": "./shell",
+          "containerPath": "/tmp"
         },
         {
           "hostPath": "/var/run/docker.sock",
