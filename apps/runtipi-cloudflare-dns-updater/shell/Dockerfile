@@ -1,5 +1,5 @@
-#FROM docker:27.5.0-cli-alpine3.21
 FROM alpine:3.22
+
 # install curl and jq
 RUN apk add --no-cache curl jq docker-cli
 
@@ -10,5 +10,5 @@ COPY runtipi_cloudflare_dns_updater.sh /tmp/runtipi_cloudflare_dns_updater.sh
 RUN chmod +x /tmp/runtipi_cloudflare_dns_updater.sh
 
 # run shell script with environment from docker-compose
-CMD ["/bin/sh", "-c", "/tmp/runtipi_cloudflare_dns_updater.sh"]
+CMD ["/tmp/runtipi_cloudflare_dns_updater.sh"]
 
