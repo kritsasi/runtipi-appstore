@@ -4,6 +4,7 @@
     {
       "image": "alpine",
       "name": "runtipi-cloudflare-dns-updater",
+      "internalPort": 8000,
       "isMain": true,
       "environment": {
         "CF_DNS__DOMAINS_0__NAME": "${CF_DNS__DOMAINS_0__NAME}",
