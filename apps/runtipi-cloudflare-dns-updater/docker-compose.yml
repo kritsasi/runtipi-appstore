@@ -15,5 +15,6 @@ services:
       - tipi_main_network
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./shell:/tmp:ro
     labels:
       runtipi.managed: true
