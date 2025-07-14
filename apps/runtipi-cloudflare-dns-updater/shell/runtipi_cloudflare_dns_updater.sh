@@ -1,5 +1,5 @@
 #!/bin/sh
-
+sleep 60
 # Configure the parameter
 cf_url=https://api.cloudflare.com/client/v4
 cf_zone_id=${CF_DNS__ACCOUNTS__SCOPED_ZONE}
