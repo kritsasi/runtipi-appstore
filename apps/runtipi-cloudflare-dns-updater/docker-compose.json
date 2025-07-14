@@ -23,7 +23,7 @@
           "containerPath": "/tmp/runtipi_cloudflare_dns_updater.sh"
         },
         {
-          "hostPath": "./var/run/docker.sock",
+          "hostPath": "/var/run/docker.sock",
           "containerPath": "/var/run/docker.sock"
         }
       ]
