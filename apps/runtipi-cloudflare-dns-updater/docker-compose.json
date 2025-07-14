@@ -15,10 +15,6 @@
       },
       "volumes": [
         {
-          "hostPath": "${APP_DATA_DIR}/script",
-          "containerPath": "/"
-        },
-        {
           "hostPath": "/var/run/docker.sock",
           "containerPath": "/var/run/docker.sock"
         }
