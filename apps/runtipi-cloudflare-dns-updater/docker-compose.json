@@ -14,8 +14,8 @@
       },
       "volumes": [
         {
-          "hostPath": "${APP_DATA_DIR}/data",
-          "containerPath": "/var/lib/runtipi-cloudflare-dns-updater/"
+          "hostPath": "./shell",
+          "containerPath": "/tmp"
         }
       ]
     }
