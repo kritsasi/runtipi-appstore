@@ -10,4 +10,4 @@ COPY runtipi_cloudflare_dns_updater.sh /tmp/runtipi_cloudflare_dns_updater.sh
 RUN chmod +x /tmp/runtipi_cloudflare_dns_updater.sh
 
 # run shell script with environment from docker-compose
-CMD ["/tmp/runtipi_cloudflare_dns_updater.sh"]
+CMD ["/bin/sh", "/tmp/runtipi_cloudflare_dns_updater.sh"]
