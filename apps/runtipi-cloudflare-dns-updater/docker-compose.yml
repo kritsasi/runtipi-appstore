@@ -1,0 +1,19 @@
+services:
+  runtipi-cloudflare-dns-updater:
+    image: docker:28.3.2-dind-alpine3.22
+    container_name: runtipi-cloudflare-dns-updater
+    environment:
+      - CF_DNS__DOMAINS_0__NAME=${CF_DNS__DOMAINS_0__NAME}
+      - CF_DNS__AUTH__SCOPED_TOKEN=${CF_DNS__AUTH__SCOPED_TOKEN}
+      - CF_DNS__ACCOUNTS__SCOPED_ZONE=${CF_DNS__ACCOUNTS__SCOPED_ZONE}
+      - CF_DNS__ACCOUNTS__SCOPED_TUNNEL=${CF_DNS__ACCOUNTS__SCOPED_TUNNEL}
+      - CF_DNS__DOMAINS_0__PROXIED=${CF_DNS__DOMAINS_0__PROXIED}
+    restart: unless-stopped
+    networks:
+      - tipi_main_network
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./shell/runtipi_cloudflare_dns_updater.sh:/tmp/runtipi_cloudflare_dns_updater.sh:ro
+    command: sh -c "apk add --no-cache curl jq && /tmp/runtipi_cloudflare_dns_updater.sh"
+    labels:
+      runtipi.managed: true
