@@ -1,7 +1,7 @@
 services:
   runtipi-cloudflare-dns-updater:
     build:
-      context: shell
+      context: script
       dockerfile: Dockerfile
     container_name: runtipi-cloudflare-dns-updater
     environment:
