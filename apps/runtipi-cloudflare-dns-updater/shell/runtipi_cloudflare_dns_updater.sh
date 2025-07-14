@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # Configure the parameter
 cf_url=https://api.cloudflare.com/client/v4
