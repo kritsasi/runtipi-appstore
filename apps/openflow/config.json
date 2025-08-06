@@ -3,7 +3,7 @@
   "name": "OpenFlow",
   "available": true,
   "exposable": true,
-  "dynamic_config": true,
+  "dynamic_config": false,
   "port": 6841,
   "id": "openflow",
   "tipi_version": 24,
