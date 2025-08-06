@@ -29,25 +29,11 @@
       "env_variable": "OPENFLOW_AES_SECRET"
     },
     {
-      "type": "string",
-      "label": "MongoDB User",
-      "required": true,
-      "default": "admin",
-      "env_variable": "MONGO_INITDB_ROOT_USERNAME"
-    },
-    {
       "type": "password",
       "label": "MongoDB Password",
       "min": 8,
       "required": true,
       "env_variable": "MONGO_INITDB_ROOT_PASSWORD"
-    },
-    {
-      "type": "string",
-      "label": "RabbitMQ User",
-      "required": true,
-      "default": "guest",
-      "env_variable": "OPENFLOW_MQ_USER"
     },
     {
       "type": "password",
