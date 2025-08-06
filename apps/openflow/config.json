@@ -7,7 +7,7 @@
   "port": 8261,
   "id": "openflow",
   "tipi_version": 24,
-  "version": "v1.5.12.29",
+  "version": "1.5.12.29",
   "categories": ["automation"],
   "description": "OpenIAP OpenFlow is a scalable, secure workflow engine that orchestrates agents and automations using MongoDB and RabbitMQ.",
   "short_desc": "Workflow orchestration by OpenIAP",
