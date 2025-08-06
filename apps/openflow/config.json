@@ -16,13 +16,13 @@
   "website": "https://openflow.openiap.io",
   "form_fields": [
     {
-      "type": "random",
+      "type": "string",
       "label": "Cookie Secret",
       "min": 32,
       "env_variable": "OPENFLOW_COOKIE_SECRET"
     },
     {
-      "type": "random",
+      "type": "string",
       "label": "AES Secret",
       "min": 32,
       "env_variable": "OPENFLOW_AES_SECRET"
@@ -34,7 +34,7 @@
       "env_variable": "MONGO_INITDB_ROOT_USERNAME"
     },
     {
-      "type": "random",
+      "type": "string",
       "label": "MongoDB Password",
       "min": 16,
       "env_variable": "MONGO_INITDB_ROOT_PASSWORD"
@@ -46,7 +46,7 @@
       "env_variable": "OPENFLOW_MQ_USER"
     },
     {
-      "type": "random",
+      "type": "string",
       "label": "RabbitMQ Password",
       "min": 16,
       "env_variable": "OPENFLOW_MQ_PASS"
