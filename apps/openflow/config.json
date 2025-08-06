@@ -10,23 +10,23 @@
   "description": "OpenIAP OpenFlow is a scalable, secure workflow engine that orchestrates agents and automations using MongoDB and RabbitMQ.",
   "tipi_version": 39,
   "version": "1.5.12.29",
-  "source": "https://github.com/semaphoreui/semaphore",
-  "website": "https://semaphoreui.com",
+  "source": "https://github.com/openiap/openflow",
+  "website": "https://openflow.openiap.io",
   "exposable": true,
   "dynamic_config": true,
   "supported_architectures": ["arm64", "amd64"],
   "form_fields": [
     {
-      "type": "text",
-      "label": "Semaphore username",
-      "required": true,
-      "env_variable": "SEMAPHORE_ADMIN_NAME"
+      "type": "random",
+      "label": "Cookie Secret",
+      "min": 32,
+      "env_variable": "OPENFLOW_COOKIE_SECRET"
     },
     {
-      "type": "text",
-      "label": "Semaphore email",
-      "required": true,
-      "env_variable": "SEMAPHORE_ADMIN_EMAIL"
+      "type": "random",
+      "label": "AES Secret",
+      "min": 32,
+      "env_variable": "OPENFLOW_AES_SECRET"
     },
     {
       "type": "password",
