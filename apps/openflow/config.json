@@ -4,7 +4,7 @@
   "available": true,
   "exposable": true,
   "dynamic_config": true,
-  "port": 8614,
+  "port": 8261,
   "id": "openflow",
   "tipi_version": 24,
   "version": "1.5.12.29",
