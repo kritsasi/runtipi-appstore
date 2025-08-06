@@ -1,0 +1,58 @@
+{
+  "$schema": "../app-info-schema.json",
+  "name": "OpenFlow",
+  "available": true,
+  "exposable": true,
+  "dynamic_config": true,
+  "port": 6841,
+  "id": "openflow",
+  "tipi_version": 24,
+  "version": "1.5.12.29",
+  "categories": ["automation", "workflow"],
+  "description": "OpenIAP OpenFlow is a scalable, secure workflow engine that orchestrates agents and automations using MongoDB and RabbitMQ.",
+  "short_desc": "Workflow orchestration by OpenIAP",
+  "author": "OpenIAP",
+  "source": "https://github.com/openiap/openflow",
+  "website": "https://openflow.openiap.io",
+  "form_fields": [
+    {
+      "type": "random",
+      "label": "Cookie Secret",
+      "min": 32,
+      "env_variable": "OPENFLOW_COOKIE_SECRET"
+    },
+    {
+      "type": "random",
+      "label": "AES Secret",
+      "min": 32,
+      "env_variable": "OPENFLOW_AES_SECRET"
+    },
+    {
+      "type": "string",
+      "label": "MongoDB User",
+      "default": "admin",
+      "env_variable": "MONGO_INITDB_ROOT_USERNAME"
+    },
+    {
+      "type": "random",
+      "label": "MongoDB Password",
+      "min": 16,
+      "env_variable": "MONGO_INITDB_ROOT_PASSWORD"
+    },
+    {
+      "type": "string",
+      "label": "RabbitMQ User",
+      "default": "guest",
+      "env_variable": "OPENFLOW_MQ_USER"
+    },
+    {
+      "type": "random",
+      "label": "RabbitMQ Password",
+      "min": 16,
+      "env_variable": "OPENFLOW_MQ_PASS"
+    }
+  ],
+  "supported_architectures": ["arm64", "amd64"],
+  "created_at": 1754456400000,
+  "updated_at": 1754456400000
+}
