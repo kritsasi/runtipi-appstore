@@ -8,12 +8,14 @@ services:
     ports:
       - ${APP_PORT}:80
     depends_on:
-      - openflow-db
-      - openflow-mq
+      openflow-db:
+        condition: service_healthy
+      openflow-mq:
+        condition: service_healthy
     networks:
       - tipi_main_network
     environment:
-      - protocol=${APP_PROTOCOL:-http}
+      - protocol=${APP_PROTOCOL}
       - domain=${APP_DOMAIN}
       - cookie_secret=${OPENFLOW_COOKIE_SECRET}
       - aes_secret=${OPENFLOW_AES_SECRET}
