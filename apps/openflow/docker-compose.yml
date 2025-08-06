@@ -1,0 +1,84 @@
+version: '3.9'
+
+services:
+  openflow:
+    container_name: openflow
+    image: openiap/openflow:1.5.12.29
+    restart: unless-stopped
+    ports:
+      - ${APP_PORT}:80
+    depends_on:
+      openflow-db:
+        condition: service_healthy
+      openflow-mq:
+        condition: service_healthy
+    networks:
+      - tipi_main_network
+    environment:
+      - protocol=${APP_PROTOCOL}
+      - domain=${APP_DOMAIN}
+      - cookie_secret=${OPENFLOW_COOKIE_SECRET}
+      - aes_secret=${OPENFLOW_AES_SECRET}
+    labels:
+      # Main
+      traefik.enable: true
+      traefik.http.middlewares.openflow-web-redirect.redirectscheme.scheme: https
+      traefik.http.services.openflow.loadbalancer.server.port: 80
+      # Web
+      traefik.http.routers.openflow-insecure.rule: Host(`${APP_DOMAIN}`)
+      traefik.http.routers.openflow-insecure.entrypoints: web
+      traefik.http.routers.openflow-insecure.service: openflow
+      traefik.http.routers.openflow-insecure.middlewares: openflow-web-redirect
+      # Websecure
+      traefik.http.routers.openflow.rule: Host(`${APP_DOMAIN}`)
+      traefik.http.routers.openflow.entrypoints: websecure
+      traefik.http.routers.openflow.service: openflow
+      traefik.http.routers.openflow.tls.certresolver: myresolver
+      # Local domain
+      traefik.http.routers.openflow-local-insecure.rule: Host(`openflow.${LOCAL_DOMAIN}`)
+      traefik.http.routers.openflow-local-insecure.entrypoints: web
+      traefik.http.routers.openflow-local-insecure.service: openflow
+      traefik.http.routers.openflow-local-insecure.middlewares: openflow-web-redirect
+      # Local domain secure
+      traefik.http.routers.openflow-local.rule: Host(`openflow.${LOCAL_DOMAIN}`)
+      traefik.http.routers.openflow-local.entrypoints: websecure
+      traefik.http.routers.openflow-local.service: openflow
+      traefik.http.routers.openflow-local.tls: true
+      runtipi.managed: true
+
+  openflow-db:
+    container_name: openflow-db
+    image: mongo:6.0
+    restart: unless-stopped
+    networks:
+      - tipi_main_network
+    volumes:
+      - ${APP_DATA_DIR}/data/mongo:/data/db
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=admin
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD}
+    healthcheck:
+      test: ["CMD-SHELL", "mongosh --quiet --eval 'db.runCommand({ ping: 1 }).ok' | grep 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    labels:
+      runtipi.managed: true
+  openflow-mq:
+    container_name: openflow-mq
+    image: rabbitmq:3-management
+    restart: unless-stopped
+    volumes:
+      - ${APP_DATA_DIR}/data/rabbitmq:/var/lib/rabbitmq
+    environment:
+      - RABBITMQ_DEFAULT_USER=guest
+      - RABBITMQ_DEFAULT_PASS=${OPENFLOW_MQ_PASS}
+    healthcheck:
+      test: ["CMD-SHELL", "rabbitmq-diagnostics -q ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    networks:
+      - tipi_main_network
+    labels:
+      runtipi.managed: true
