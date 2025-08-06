@@ -58,5 +58,6 @@
         "test": "rabbitmq-diagnostics -q ping"
       }
     }
-  ]
+  ],
+  "$schema": "../dynamic-compose-schema.json"
 }
