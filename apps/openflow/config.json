@@ -9,7 +9,7 @@
   "categories": ["automation"],
   "description": "OpenIAP OpenFlow is a scalable, secure workflow engine that orchestrates agents and automations using MongoDB and RabbitMQ.",
   "tipi_version": 39,
-  "version": "v2.15.4",
+  "version": "1.5.12.29",
   "source": "https://github.com/semaphoreui/semaphore",
   "website": "https://semaphoreui.com",
   "exposable": true,
