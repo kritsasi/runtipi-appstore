@@ -22,28 +22,28 @@ services:
     labels:
       # Main
       traefik.enable: true
-      traefik.http.middlewares.tooljet-web-redirect.redirectscheme.scheme: https
-      traefik.http.services.tooljet.loadbalancer.server.port: 80
+      traefik.http.middlewares.openflow-web-redirect.redirectscheme.scheme: https
+      traefik.http.services.openflow.loadbalancer.server.port: 80
       # Web
-      traefik.http.routers.tooljet-insecure.rule: Host(`${APP_DOMAIN}`)
-      traefik.http.routers.tooljet-insecure.entrypoints: web
-      traefik.http.routers.tooljet-insecure.service: openflow
-      traefik.http.routers.tooljet-insecure.middlewares: openflow-web-redirect
+      traefik.http.routers.openflow-insecure.rule: Host(`${APP_DOMAIN}`)
+      traefik.http.routers.openflow-insecure.entrypoints: web
+      traefik.http.routers.openflow-insecure.service: openflow
+      traefik.http.routers.openflow-insecure.middlewares: openflow-web-redirect
       # Websecure
-      traefik.http.routers.tooljet.rule: Host(`${APP_DOMAIN}`)
-      traefik.http.routers.tooljet.entrypoints: websecure
-      traefik.http.routers.tooljet.service: openflow
-      traefik.http.routers.tooljet.tls.certresolver: myresolver
+      traefik.http.routers.openflow.rule: Host(`${APP_DOMAIN}`)
+      traefik.http.routers.openflow.entrypoints: websecure
+      traefik.http.routers.openflow.service: openflow
+      traefik.http.routers.openflow.tls.certresolver: myresolver
       # Local domain
-      traefik.http.routers.tooljet-local-insecure.rule: Host(`openflow.${LOCAL_DOMAIN}`)
-      traefik.http.routers.tooljet-local-insecure.entrypoints: web
-      traefik.http.routers.tooljet-local-insecure.service: openflow
-      traefik.http.routers.tooljet-local-insecure.middlewares: openflow-web-redirect
+      traefik.http.routers.openflow-local-insecure.rule: Host(`openflow.${LOCAL_DOMAIN}`)
+      traefik.http.routers.openflow-local-insecure.entrypoints: web
+      traefik.http.routers.openflow-local-insecure.service: openflow
+      traefik.http.routers.openflow-local-insecure.middlewares: openflow-web-redirect
       # Local domain secure
-      traefik.http.routers.tooljet-local.rule: Host(`openflow.${LOCAL_DOMAIN}`)
-      traefik.http.routers.tooljet-local.entrypoints: websecure
-      traefik.http.routers.tooljet-local.service: openflow
-      traefik.http.routers.tooljet-local.tls: true
+      traefik.http.routers.openflow-local.rule: Host(`openflow.${LOCAL_DOMAIN}`)
+      traefik.http.routers.openflow-local.entrypoints: websecure
+      traefik.http.routers.openflow-local.service: openflow
+      traefik.http.routers.openflow-local.tls: true
       runtipi.managed: true
 
   openflow-db:
