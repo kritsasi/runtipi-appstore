@@ -12,6 +12,5 @@
         "MONGO_URI": "mongodb://${MONGO_INITDB_ROOT_USERNAME}:${MONGO_INITDB_ROOT_PASSWORD}@openflow-db:27017",
         "RABBITMQ_URI": "amqp://${OPENFLOW_MQ_USER}:${OPENFLOW_MQ_PASS}@openflow-mq:5672"
       }
-    },
-  "$schema": "../dynamic-compose-schema.json"
+    }
 }
