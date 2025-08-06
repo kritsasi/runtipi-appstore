@@ -5,7 +5,7 @@
       "name": "openflow",
       "image": "openiap/openflow:1.5.12.29",
       "isMain": true,
-      "internalPort": 80,
+      "internalPort": 7580,
       "environment": {
         "cookie_secret": "${OPENFLOW_COOKIE_SECRET}",
         "aes_secret": "${OPENFLOW_AES_SECRET}",
