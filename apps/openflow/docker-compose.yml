@@ -3,8 +3,6 @@ version: '3.7'
 services:
   openflow:
     container_name: openflow
-    tty: true
-    stdin_open: true
     image: openiap/openflow:1.5.12.29
     restart: unless-stopped
     ports:
