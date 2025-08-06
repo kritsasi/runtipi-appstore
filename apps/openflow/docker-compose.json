@@ -6,7 +6,7 @@
       "isMain": true,
       "internalPort": 80,
       "environment": {
-        "protocol": "${APP_PROTOCOL:-http}",
+        "protocol": "${APP_PROTOCOL}",
         "domain": "${APP_DOMAIN}",
         "cookie_secret": "${OPENFLOW_COOKIE_SECRET}",
         "aes_secret": "${OPENFLOW_AES_SECRET}",
