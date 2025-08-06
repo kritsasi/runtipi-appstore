@@ -29,23 +29,30 @@
       "env_variable": "OPENFLOW_AES_SECRET"
     },
     {
+      "type": "string",
+      "label": "MongoDB User",
+      "required": true,
+      "default": "admin",
+      "env_variable": "MONGO_INITDB_ROOT_USERNAME"
+    },
+    {
       "type": "password",
-      "label": "Semaphore password",
+      "label": "MongoDB Password",
       "min": 8,
       "required": true,
-      "env_variable": "SEMAPHORE_ADMIN_PASSWORD"
+      "env_variable": "MONGO_INITDB_ROOT_PASSWORD"
     },
     {
-      "type": "random",
-      "label": "Semaphore database password",
-      "min": 32,
-      "env_variable": "SEMAPHORE_DB_PASSWORD"
+      "type": "string",
+      "label": "RabbitMQ User",
+      "default": "guest",
+      "env_variable": "OPENFLOW_MQ_USER"
     },
     {
-      "type": "random",
-      "label": "Semaphore access key encryption",
-      "min": 32,
-      "env_variable": "SEMAPHORE_ACCESS_KEY_ENCRYPTION"
+      "type": "password",
+      "label": "RabbitMQ Password",
+      "min": 8,
+      "env_variable": "OPENFLOW_MQ_PASS"
     }
   ],
   "created_at": 1691943801422,
