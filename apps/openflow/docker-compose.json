@@ -17,9 +17,7 @@
       "dependsOn": {
         "openflow-db": { "condition": "service_healthy" },
         "openflow-mq": { "condition": "service_healthy" }
-      },
-      "tty": true,
-      "stdinOpen": true
+      }
     },
     {
       "name": "openflow-db",
