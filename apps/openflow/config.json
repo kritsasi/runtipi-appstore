@@ -45,6 +45,7 @@
     {
       "type": "string",
       "label": "RabbitMQ User",
+      "required": true,
       "default": "guest",
       "env_variable": "OPENFLOW_MQ_USER"
     },
@@ -52,6 +53,7 @@
       "type": "password",
       "label": "RabbitMQ Password",
       "min": 8,
+      "required": true,
       "env_variable": "OPENFLOW_MQ_PASS"
     }
   ],
