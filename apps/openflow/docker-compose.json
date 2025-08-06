@@ -10,4 +10,5 @@
         "cookie_secret": "${OPENFLOW_COOKIE_SECRET}"
       }
     }
+  ]
 }
