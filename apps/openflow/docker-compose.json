@@ -3,46 +3,62 @@
   "services": [
     {
       "name": "openflow",
-      "image": "semaphoreui/semaphore:v2.15.4",
+      "image": "openiap/openflow:1.5.12.29",
       "isMain": true,
-      "internalPort": 3000,
+      "internalPort": 80,
       "environment": {
-        "SEMAPHORE_DB_USER": "semaphore",
-        "SEMAPHORE_DB_PASS": "${SEMAPHORE_DB_PASSWORD}",
-        "SEMAPHORE_DB_HOST": "semaphore-db",
-        "SEMAPHORE_DB_PORT": "5432",
-        "SEMAPHORE_DB_DIALECT": "postgres",
-        "SEMAPHORE_DB": "semaphore",
-        "SEMAPHORE_PLAYBOOK_PATH": "/tmp/semaphore",
-        "SEMAPHORE_ADMIN_PASSWORD": "${SEMAPHORE_ADMIN_PASSWORD}",
-        "SEMAPHORE_ADMIN_NAME": "${SEMAPHORE_ADMIN_NAME}",
-        "SEMAPHORE_ADMIN_EMAIL": "${SEMAPHORE_ADMIN_EMAIL}",
-        "SEMAPHORE_ADMIN": "${SEMAPHORE_ADMIN_NAME}",
-        "SEMAPHORE_ACCESS_KEY_ENCRYPTION": "${SEMAPHORE_ACCESS_KEY_ENCRYPTION}",
-        "SEMAPHORE_LDAP_ACTIVATED": "no",
-        "TZ": "${TZ}"
+        "protocol": "${APP_PROTOCOL}",
+        "domain": "${APP_DOMAIN}",
+        "cookie_secret": "${OPENFLOW_COOKIE_SECRET}",
+        "aes_secret": "${OPENFLOW_AES_SECRET}",
+        "MONGO_URI": "mongodb://admin:${MONGO_INITDB_ROOT_PASSWORD}@openflow-db:27017",
+        "RABBITMQ_URI": "amqp://guest:${OPENFLOW_MQ_PASS}@openflow-mq:5672"
       },
-      "volumes": [
-        {
-          "hostPath": "${APP_DATA_DIR}/data/repositories",
-          "containerPath": "/repositories"
-        }
-      ]
+      "dependsOn": {
+        "openflow-db": { "condition": "service_healthy" },
+        "openflow-mq": { "condition": "service_healthy" }
+      }
     },
     {
       "name": "openflow-db",
-      "image": "postgres:14",
+      "image": "mongo:6.0",
       "environment": {
-        "POSTGRES_USER": "semaphore",
-        "POSTGRES_PASSWORD": "${SEMAPHORE_DB_PASSWORD}",
-        "POSTGRES_DB": "semaphore"
+        "MONGO_INITDB_ROOT_USERNAME": "admin",
+        "MONGO_INITDB_ROOT_PASSWORD": "${MONGO_INITDB_ROOT_PASSWORD}"
       },
       "volumes": [
         {
-          "hostPath": "${APP_DATA_DIR}/data/db",
-          "containerPath": "/var/lib/postgresql/data"
+          "hostPath": "${APP_DATA_DIR}/data/mongo",
+          "containerPath": "/data/db"
         }
-      ]
+      ],
+      "healthCheck": {
+        "interval": "10s",
+        "timeout": "5s",
+        "retries": 10,
+        "test": "mongosh --quiet --eval 'db.runCommand({ ping: 1 }).ok' | grep 1"
+      }
+    },
+    {
+      "name": "openflow-mq",
+      "image": "rabbitmq:3-management",
+      "environment": {
+        "RABBITMQ_DEFAULT_USER": "guest",
+        "RABBITMQ_DEFAULT_PASS": "${OPENFLOW_MQ_PASS}"
+      },
+      "volumes": [
+        {
+          "hostPath": "${APP_DATA_DIR}/data/rabbitmq",
+          "containerPath": "/var/lib/rabbitmq"
+        }
+      ],
+      "healthCheck": {
+        "interval": "10s",
+        "timeout": "5s",
+        "retries": 10,
+        "test": "rabbitmq-diagnostics -q ping"
+      }
     }
-  ]
+  ],
+  "$schema": "../dynamic-compose-schema.json"
 }
