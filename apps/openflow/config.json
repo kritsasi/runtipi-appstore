@@ -20,36 +20,6 @@
       "label": "Cookie Secret",
       "min": 32,
       "env_variable": "OPENFLOW_COOKIE_SECRET"
-    },
-    {
-      "type": "string",
-      "label": "AES Secret",
-      "min": 32,
-      "env_variable": "OPENFLOW_AES_SECRET"
-    },
-    {
-      "type": "string",
-      "label": "MongoDB User",
-      "default": "admin",
-      "env_variable": "MONGO_INITDB_ROOT_USERNAME"
-    },
-    {
-      "type": "string",
-      "label": "MongoDB Password",
-      "min": 16,
-      "env_variable": "MONGO_INITDB_ROOT_PASSWORD"
-    },
-    {
-      "type": "string",
-      "label": "RabbitMQ User",
-      "default": "guest",
-      "env_variable": "OPENFLOW_MQ_USER"
-    },
-    {
-      "type": "string",
-      "label": "RabbitMQ Password",
-      "min": 16,
-      "env_variable": "OPENFLOW_MQ_PASS"
     }
   ],
   "supported_architectures": ["arm64", "amd64"],
