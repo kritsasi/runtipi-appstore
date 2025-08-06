@@ -5,7 +5,7 @@
   "available": true,
   "short_desc": "Modern UI for Ansible, Terraform, OpenTofu, Bash, Pulumi.",
   "author": "semaphoreui",
-  "port": 8526,
+  "port": 8527,
   "categories": ["development"],
   "description": "Semaphore is a modern UI for Ansible, Terraform/OpenTofu, Bash and Pulumi. It lets you easily run Ansible playbooks, get notifications about fails, control access to deployment system.",
   "tipi_version": 39,
