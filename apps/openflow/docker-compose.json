@@ -3,40 +3,39 @@
     {
       "name": "openflow",
       "image": "openiap/openflow:1.5.12.29",
+      "isMain": true,
+      "internalPort": 80,
       "environment": {
-        "protocol": "${APP_PROTOCOL}",
+        "protocol": "${APP_PROTOCOL:-http}",
         "domain": "${APP_DOMAIN}",
         "cookie_secret": "${OPENFLOW_COOKIE_SECRET}",
-        "aes_secret": "${OPENFLOW_AES_SECRET}"
+        "aes_secret": "${OPENFLOW_AES_SECRET}",
+        "MONGO_URI": "mongodb://${MONGO_INITDB_ROOT_USERNAME}:${MONGO_INITDB_ROOT_PASSWORD}@openflow-db:27017",
+        "RABBITMQ_URI": "amqp://${OPENFLOW_MQ_USER}:${OPENFLOW_MQ_PASS}@openflow-mq:5672"
       },
-      "internalPort": 80,
       "dependsOn": {
-        "openflow-db": {
-          "condition": "service_healthy"
-        },
-        "openflow-mq": {
-          "condition": "service_healthy"
-        }
-      },
-      "isMain": true
+        "openflow-db": { "condition": "service_healthy" },
+        "openflow-mq": { "condition": "service_healthy" }
+      }
     },
     {
       "name": "openflow-db",
       "image": "mongo:6.0",
+      "environment": {
+        "MONGO_INITDB_ROOT_USERNAME": "${MONGO_INITDB_ROOT_USERNAME}",
+        "MONGO_INITDB_ROOT_PASSWORD": "${MONGO_INITDB_ROOT_PASSWORD}"
+      },
       "volumes": [
         {
           "hostPath": "${APP_DATA_DIR}/data/mongo",
-          "containerPath": "/data/db",
-          "readOnly": false,
-          "shared": false,
-          "private": false
+          "containerPath": "/data/db"
         }
       ],
       "healthCheck": {
-        "test": "mongosh --quiet --eval 'db.runCommand({ ping: 1 }).ok' | grep 1",
         "interval": "10s",
         "timeout": "5s",
-        "retries": 10
+        "retries": 10,
+        "test": "mongosh --quiet --eval 'db.runCommand({ ping: 1 }).ok' | grep 1"
       }
     },
     {
@@ -49,18 +48,16 @@
       "volumes": [
         {
           "hostPath": "${APP_DATA_DIR}/data/rabbitmq",
-          "containerPath": "/var/lib/rabbitmq",
-          "readOnly": false,
-          "shared": false,
-          "private": false
+          "containerPath": "/var/lib/rabbitmq"
         }
       ],
       "healthCheck": {
-        "test": "rabbitmq-diagnostics -q ping",
         "interval": "10s",
         "timeout": "5s",
-        "retries": 10
+        "retries": 10,
+        "test": "rabbitmq-diagnostics -q ping"
       }
     }
-  ]
+  ],
+  "$schema": "../dynamic-compose-schema.json"
 }
