@@ -21,6 +21,9 @@ services:
       - domain=${APP_DOMAIN}
       - cookie_secret=${OPENFLOW_COOKIE_SECRET}
       - aes_secret=${OPENFLOW_AES_SECRET}
+      - amqp_url=amqp://guest:${OPENFLOW_MQ_PASS}@openflow-mq?frameMax=0x2000
+      - mongodb_url=mongodb://openflow-db:27017/?replicaSet=rs0
+      - mongodb_db=openflow
       - TZ=${TZ}
     labels:
       # Main
