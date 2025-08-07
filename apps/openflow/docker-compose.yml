@@ -49,7 +49,7 @@ services:
 
   openflow-db:
     container_name: openflow-db
-    image: mongo:4.4
+    image: mongo:8.0.12
     restart: unless-stopped
     networks:
       - tipi_main_network
@@ -59,6 +59,7 @@ services:
       - MONGO_INITDB_ROOT_USERNAME=admin
       - MONGO_INITDB_ROOT_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD}
       - TZ=${TZ}
+    command: --serviceExecutor adaptive
     healthcheck:
       test: ["CMD-SHELL", "mongosh --quiet --eval 'db.runCommand({ ping: 1 }).ok' | grep 1"]
       interval: 10s
@@ -66,6 +67,21 @@ services:
       retries: 10
     labels:
       runtipi.managed: true
+
+  openflow-dbexp:
+    container_name: openflow-dbexp
+    image: mongo-express:1.0.2
+    restart: unless-stopped
+    networks:
+      - tipi_main_network
+    environment:
+      - ME_CONFIG_MONGODB_ADMINUSERNAME=admin
+      - ME_CONFIG_MONGODB_ADMINPASSWORD=${MONGO_INITDB_ROOT_PASSWORD}
+      - ME_CONFIG_MONGODB_URL=mongodb://admin:${MONGO_INITDB_ROOT_PASSWORD}@openflow-db:27017/
+      - ME_CONFIG_BASICAUTH=false
+    labels:
+      runtipi.managed: true
+      
   openflow-mq:
     container_name: openflow-mq
     image: rabbitmq:3-management
