@@ -6,13 +6,17 @@
       "image": "openiap/openflow:1.5.12.29",
       "isMain": true,
       "internalPort": 80,
+      "deploy": {
+        "replicas": 1
+      },
       "environment": {
         "protocol": "${APP_PROTOCOL}",
         "domain": "${APP_DOMAIN}",
         "cookie_secret": "${OPENFLOW_COOKIE_SECRET}",
         "aes_secret": "${OPENFLOW_AES_SECRET}",
-        "MONGO_URI": "mongodb://admin:${MONGO_INITDB_ROOT_PASSWORD}@openflow-db:27017",
-        "RABBITMQ_URI": "amqp://guest:${OPENFLOW_MQ_PASS}@openflow-mq:5672",
+        "mongodb_url": "mongodb://admin:${MONGO_INITDB_ROOT_PASSWORD}@openflow-db:27017/?replicaSet=rs0",
+        "mongodb_db": "openflow",
+        "amqp_url": "amqp://guest:${OPENFLOW_MQ_PASS}@openflow-mq:5672?frameMax=0x2000",
         "TZ": "${TZ}"
       },
       "dependsOn": {
@@ -22,10 +26,12 @@
     },
     {
       "name": "openflow-db",
-      "image": "mongo:4.4",
+      "image": "mongo:8.0.12",
+      "command": "--bind_ip_all --replSet rs0",
       "environment": {
         "MONGO_INITDB_ROOT_USERNAME": "admin",
         "MONGO_INITDB_ROOT_PASSWORD": "${MONGO_INITDB_ROOT_PASSWORD}",
+        "MONGO_REPLICA_SET_NAME": "rs0",
         "TZ": "${TZ}"
       },
       "volumes": [
@@ -39,6 +45,16 @@
         "timeout": "5s",
         "retries": 10,
         "test": "mongosh --quiet --eval 'db.runCommand({ ping: 1 }).ok' | grep 1"
+      }
+    },
+    {
+      "name": "openflow-dbsetup",
+      "image": "mongo:8.0.12",
+      "command": "mongosh --host openflow-db:27017 --eval  ' db = (new Mongo(\"openflow-db:27017\")).getDB(\"openflow\"); config = { \"_id\" : \"rs0\", \"members\" : [\n  {\n    \"_id\" : 0,\n    \"host\" : \"openflow-db:27017\"\n  }\n] }; rs.initiate(config); '\n",
+      "dependsOn": {
+        "openflow-db": {
+          "condition": "service_started"
+        }
       }
     },
     {
