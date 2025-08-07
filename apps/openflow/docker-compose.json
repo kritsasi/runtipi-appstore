@@ -12,7 +12,8 @@
         "cookie_secret": "${OPENFLOW_COOKIE_SECRET}",
         "aes_secret": "${OPENFLOW_AES_SECRET}",
         "MONGO_URI": "mongodb://admin:${MONGO_INITDB_ROOT_PASSWORD}@openflow-db:27017",
-        "RABBITMQ_URI": "amqp://guest:${OPENFLOW_MQ_PASS}@openflow-mq:5672"
+        "RABBITMQ_URI": "amqp://guest:${OPENFLOW_MQ_PASS}@openflow-mq:5672",
+        "TZ": "${TZ}"
       },
       "dependsOn": {
         "openflow-db": { "condition": "service_healthy" },
@@ -24,7 +25,8 @@
       "image": "mongo:6.0",
       "environment": {
         "MONGO_INITDB_ROOT_USERNAME": "admin",
-        "MONGO_INITDB_ROOT_PASSWORD": "${MONGO_INITDB_ROOT_PASSWORD}"
+        "MONGO_INITDB_ROOT_PASSWORD": "${MONGO_INITDB_ROOT_PASSWORD}",
+        "TZ": "${TZ}"
       },
       "volumes": [
         {
@@ -44,7 +46,8 @@
       "image": "rabbitmq:3-management",
       "environment": {
         "RABBITMQ_DEFAULT_USER": "guest",
-        "RABBITMQ_DEFAULT_PASS": "${OPENFLOW_MQ_PASS}"
+        "RABBITMQ_DEFAULT_PASS": "${OPENFLOW_MQ_PASS}",
+        "TZ": "${TZ}"
       },
       "volumes": [
         {
