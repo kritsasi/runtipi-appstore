@@ -5,6 +5,8 @@ services:
     container_name: openflow
     image: openiap/openflow:1.5.12.29
     restart: unless-stopped
+    deploy:
+      replicas: 1
     ports:
       - ${APP_PORT}:80
     depends_on:
@@ -72,10 +74,9 @@ services:
   openflow-dbsetup:
     container_name: openflow-dbsetup
     image: mongo:8.0.12
-    restart: unless-stopped
+    restart: "no"
     depends_on:
       - openflow-db
-    restart: "no"
     networks:
       - tipi_main_network
     command: >
