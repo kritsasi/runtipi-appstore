@@ -68,13 +68,7 @@
       "command": [
         "sh",
         "-c",
-        "echo $(date '+%F %T') 'Waiting for MongoDB to respond...'; \
-until mongo --host mongodb:27017 --quiet --eval 'db.runCommand({ ping: 1 })' >/dev/null 2>&1; do sleep 2; done; \
-echo $(date '+%F %T') 'Initiating replica set (idempotent)...'; \
-mongo --host mongodb:27017 --quiet --eval 'try { rs.initiate({_id:\"rs0\", members:[{_id:0, host:\"mongodb:27017\"}]}) } catch(e) { if (e.code != 23) { throw e } }'; \
-echo $(date '+%F %T') 'Waiting for PRIMARY election...'; \
-until mongo --host mongodb:27017 --quiet --eval 'db.isMaster().ismaster' | grep -q true; do sleep 1; done; \
-echo $(date '+%F %T') 'Replica set ready (PRIMARY).'"
+        "echo $(date '+%F %T') 'Waiting for MongoDB to respond...'; until mongo --host mongodb:27017 --quiet --eval 'db.runCommand({ ping: 1 })' >/dev/null 2>&1; do sleep 2; done; echo $(date '+%F %T') 'Initiating replica set (idempotent)...'; mongo --host mongodb:27017 --quiet --eval 'try { rs.initiate({_id:\"rs0\", members:[{_id:0, host:\"mongodb:27017\"}]}) } catch(e) { if (e.code != 23) { throw e } }'; echo $(date '+%F %T') 'Waiting for PRIMARY election...'; until mongo --host mongodb:27017 --quiet --eval 'db.isMaster().ismaster' | grep -q true; do sleep 1; done; echo $(date '+%F %T') 'Replica set ready (PRIMARY).'"
       ],
       "dependsOn": {
         "mongodb": { "condition": "service_healthy" }
