@@ -10,9 +10,6 @@
         { "containerPort": 50051, "hostPort": 50051, "tcp": true },
         { "containerPort": 5858, "hostPort": 5858, "tcp": true }
       ],
-      "deploy": {
-        "replicas": 1
-      },
       "environment": {
         "protocol": "${APP_PROTOCOL}",
         "domain": "${APP_DOMAIN}",
