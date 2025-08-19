@@ -35,8 +35,7 @@
       ],
       "dependsOn": {
         "rabbitmq": { "condition": "service_healthy" },
-        "mongodb": { "condition": "service_healthy" },
-        "mongo-init-replica": { "condition": "service_completed_successfully" }
+        "mongodb": { "condition": "service_healthy" }
       }
     },
     {
@@ -58,7 +57,7 @@
         "interval": "10s",
         "timeout": "5s",
         "retries": 10,
-        "startPeriod": "20s",
+        "startPeriod": "40s",
         "test": "sh -c \"echo 'db.adminCommand({ ping: 1 }).ok' | mongo --quiet 127.0.0.1:27017 | grep 1 || exit 1\""
       }
     },
