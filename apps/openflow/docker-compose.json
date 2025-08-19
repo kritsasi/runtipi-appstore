@@ -87,7 +87,7 @@
         "interval": "10s",
         "timeout": "5s",
         "retries": 12,
-        "startPeriod": "30s",
+        "startPeriod": "50s",
         "test": "rabbitmq-diagnostics ping"
       }
     }
