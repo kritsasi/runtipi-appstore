@@ -3,27 +3,34 @@ version: '3.9'
 services:
   openflow:
     container_name: openflow
-    image: openiap/openflow:1.5.12.29
+    image: openiap/openflow:1.5.12.35
     restart: unless-stopped
     deploy:
       replicas: 1
     ports:
-      - ${APP_PORT}:80
+      - "3000:3000"   # internalPort
+      - "50051:50051"
+      - "5858:5858"
     depends_on:
-      openflow-db:
+      mongodb:
         condition: service_healthy
-      openflow-mq:
+      rabbitmq:
         condition: service_healthy
     networks:
       - tipi_main_network
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
     environment:
       - protocol=${APP_PROTOCOL}
       - domain=${APP_DOMAIN}
-      - cookie_secret=${OPENFLOW_COOKIE_SECRET}
-      - aes_secret=${OPENFLOW_AES_SECRET}
-      - amqp_url=amqp://guest:${OPENFLOW_MQ_PASS}@openflow-mq?frameMax=0x2000
-      - mongodb_url=mongodb://openflow-db:27017/?replicaSet=rs0
+      - agent_oidc_userinfo_endpoint=http://api:3000/oidc/me
+      - agent_oidc_issuer=http://${APP_DOMAIN}/oidc
+      - agent_oidc_authorization_endpoint=http://${APP_DOMAIN}/oidc/auth
+      - agent_oidc_token_endpoint=http://api:3000/oidc/token
+      - amqp_url=amqp://guest:guest@rabbitmq?frameMax=0x2000
+      - mongodb_url=mongodb://mongodb:27017/?replicaSet=rs0
       - mongodb_db=openflow
+      - aes_secret=${OPENFLOW_AES_SECRET}
       - TZ=${TZ}
     labels:
       # Main
@@ -52,8 +59,8 @@ services:
       traefik.http.routers.openflow-local.tls: true
       runtipi.managed: true
 
-  openflow-db:
-    container_name: openflow-db
+  mongodb:
+    container_name: mongodb
     image: mongo:8.0.12
     restart: unless-stopped
     networks:
@@ -61,60 +68,31 @@ services:
     volumes:
       - ${APP_DATA_DIR}/data/mongo:/data/db
     environment:
-      - MONGO_INITDB_ROOT_USERNAME=admin
-      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD}
       - MONGO_REPLICA_SET_NAME=rs0
+      - MONGO_INITDB_DATABASE=openflow
       - TZ=${TZ}
     command: "--bind_ip_all --replSet rs0"
     healthcheck:
-      test: ["CMD-SHELL", "mongosh --quiet --eval 'db.runCommand({ ping: 1 }).ok' | grep 1"]
+      test: ["CMD-SHELL", "mongosh --quiet --eval 'db.adminCommand({ ping: 1 }).ok' | grep 1"]
       interval: 10s
       timeout: 5s
       retries: 10
-    labels:
-      runtipi.managed: true
-
-  openflow-dbsetup:
-    container_name: openflow-dbsetup
-    image: mongo:8.0.12
-    restart: "no"
-    depends_on:
-      - openflow-db
-    networks:
-      - tipi_main_network
-    command: >
-      mongosh --host openflow-db:27017 --eval 
-      '
-      db = (new Mongo("openflow-db:27017")).getDB("openflow");
-      config = {
-      "_id" : "rs0",
-      "members" : [
-        {
-          "_id" : 0,
-          "host" : "openflow-db:27017"
-        }
-      ]
-      };
-      rs.initiate(config);
-      '
+      start_period: 20s
     labels:
       runtipi.managed: true
       
-  openflow-mq:
-    container_name: openflow-mq
+  rabbitmq:
+    container_name: rabbitmq
     image: rabbitmq:3-management
     restart: unless-stopped
     volumes:
       - ${APP_DATA_DIR}/data/rabbitmq:/var/lib/rabbitmq
-    environment:
-      - RABBITMQ_DEFAULT_USER=guest
-      - RABBITMQ_DEFAULT_PASS=${OPENFLOW_MQ_PASS}
-      - TZ=${TZ}
     healthcheck:
-      test: ["CMD-SHELL", "rabbitmq-diagnostics -q ping"]
+      test: ["CMD", "rabbitmq-diagnostics", "ping"]
       interval: 10s
       timeout: 5s
-      retries: 10
+      retries: 12
+      start_period: 20s
     networks:
       - tipi_main_network
     labels:
