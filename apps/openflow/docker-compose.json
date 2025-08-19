@@ -54,7 +54,7 @@
         "timeout": "5s",
         "retries": 10,
         "startPeriod": "40s",
-        "test": "mongo --quiet --eval 'db.adminCommand({ ping: 1 }).ok' 127.0.0.1:27017 | grep 1"
+        "test": "sh -c \"echo 'db.adminCommand({ ping: 1 }).ok' | mongo --quiet 127.0.0.1:27017 | grep 1 || exit 1\""
       }
     },
     {
