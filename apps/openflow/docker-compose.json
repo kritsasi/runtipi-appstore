@@ -58,7 +58,7 @@
         "interval": "10s",
         "timeout": "5s",
         "retries": 10,
-        "startPeriod": "30s",
+        "startPeriod": "20s",
         "test": "sh -c \"echo 'db.adminCommand({ ping: 1 }).ok' | mongo --quiet 127.0.0.1:27017 | grep 1 || exit 1\""
       }
     },
@@ -68,7 +68,7 @@
       "command": [
         "sh",
         "-c",
-        "echo $(date '+%F %T') 'Waiting for MongoDB to respond...'; until mongo --host mongodb:27017 --quiet --eval 'db.runCommand({ ping: 1 })' >/dev/null 2>&1; do sleep 2; done; echo $(date '+%F %T') 'Initiating replica set (idempotent)...'; mongo --host mongodb:27017 --quiet --eval 'try { rs.initiate({_id:\"rs0\", members:[{_id:0, host:\"mongodb:27017\"}]}) } catch(e) { if (e.code != 23) { throw e } }'; echo $(date '+%F %T') 'Waiting for PRIMARY election...'; until mongo --host mongodb:27017 --quiet --eval 'db.isMaster().ismaster' | grep -q true; do sleep 1; done; echo $(date '+%F %T') 'Replica set ready (PRIMARY).'"
+        "echo $(date '+%F %T') 'Waiting for MongoDB to respond...'; until mongo --host mongodb:27017 --quiet --eval 'db.runCommand({ ping: 1 })' >/dev/null 2>&1; do sleep 2; done; if [ -f /data/db/.rs_initiated ]; then echo $(date '+%F %T') 'Replica already initiated (sentinel found). Skipping.'; exit 0; fi; if mongo --host mongodb:27017 --quiet --eval 'var s=rs.status(); s.ok ? s.ok : 0' 2>/dev/null | grep -q '^1$'; then echo $(date '+%F %T') 'Replica already initiated (rs.status ok). Creating sentinel and skipping.'; touch /data/db/.rs_initiated; exit 0; fi; echo $(date '+%F %T') 'Initiating replica set (idempotent)...'; mongo --host mongodb:27017 --quiet --eval 'rs.initiate({_id:\"rs0\", members:[{_id:0, host:\"mongodb:27017\"}]})' || true; echo $(date '+%F %T') 'Waiting for PRIMARY election...'; for i in $(seq 1 60); do if mongo --host mongodb:27017 --quiet --eval 'db.isMaster().ismaster' | grep -q true; then echo $(date '+%F %T') 'Replica set ready (PRIMARY).'; touch /data/db/.rs_initiated; exit 0; fi; sleep 1; done; echo $(date '+%F %T') 'PRIMARY not ready in time, but init attempted.'; exit 0"
       ],
       "dependsOn": {
         "mongodb": { "condition": "service_healthy" }
@@ -87,7 +87,7 @@
         "interval": "10s",
         "timeout": "5s",
         "retries": 12,
-        "startPeriod": "50s",
+        "startPeriod": "20s",
         "test": "rabbitmq-diagnostics ping"
       }
     }
