@@ -43,7 +43,7 @@
       "command": "--bind_ip_all --replSet rs0",
       "environment": {
         "MONGO_REPLICA_SET_NAME": "rs0",
-        "MONGO_INITDB_DATABASE": "openflow"
+        "MONGO_INITDB_DATABASE": "openflow",
         "TZ": "${TZ}"
       },
       "volumes": [
@@ -77,6 +77,5 @@
         "test": "rabbitmq-diagnostics ping"
       }
     }
-  ],
-  "$schema": "../dynamic-compose-schema.json"
+  ]
 }
