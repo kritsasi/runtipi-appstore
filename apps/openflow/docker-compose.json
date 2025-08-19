@@ -3,35 +3,47 @@
   "services": [
     {
       "name": "openflow",
-      "image": "openiap/openflow:1.5.12.29",
+      "image": "openiap/openflow:1.5.12.35",
       "isMain": true,
-      "internalPort": 80,
+      "internalPort": 3000,
+      "addPorts": [
+        { "containerPort": 50051, "hostPort": 50051, "tcp": true },
+        { "containerPort": 5858, "hostPort": 5858, "tcp": true }
+      ],
       "deploy": {
         "replicas": 1
       },
       "environment": {
         "protocol": "${APP_PROTOCOL}",
         "domain": "${APP_DOMAIN}",
-        "cookie_secret": "${OPENFLOW_COOKIE_SECRET}",
-        "aes_secret": "${OPENFLOW_AES_SECRET}",
-        "mongodb_url": "mongodb://admin:${MONGO_INITDB_ROOT_PASSWORD}@openflow-db:27017/?replicaSet=rs0",
+        "agent_oidc_userinfo_endpoint": "http://api:3000/oidc/me",
+        "agent_oidc_issuer": "http://${DOMAIN}/oidc",
+        "agent_oidc_authorization_endpoint": "http://${DOMAIN}/oidc/auth",
+        "agent_oidc_token_endpoint": "http://api:3000/oidc/token",
+        "amqp_url": "amqp://guest:guest@rabbitmq?frameMax=0x2000",
+        "mongodb_url": "mongodb://mongodb:27017/?replicaSet=rs0",
         "mongodb_db": "openflow",
-        "amqp_url": "amqp://guest:${OPENFLOW_MQ_PASS}@openflow-mq:5672?frameMax=0x2000",
+        "aes_secret": "${OPENFLOW_AES_SECRET}",
         "TZ": "${TZ}"
       },
+      "volumes": [
+        { 
+          "hostPath": "/var/run/docker.sock", 
+          "containerPath": "/var/run/docker.sock" 
+        }
+      ],
       "dependsOn": {
-        "openflow-db": { "condition": "service_healthy" },
-        "openflow-mq": { "condition": "service_healthy" }
+        "mongodb": { "condition": "service_healthy" },
+        "rabbitmq": { "condition": "service_healthy" }
       }
     },
     {
-      "name": "openflow-db",
+      "name": "mongodb",
       "image": "mongo:8.0.12",
       "command": "--bind_ip_all --replSet rs0",
       "environment": {
-        "MONGO_INITDB_ROOT_USERNAME": "admin",
-        "MONGO_INITDB_ROOT_PASSWORD": "${MONGO_INITDB_ROOT_PASSWORD}",
         "MONGO_REPLICA_SET_NAME": "rs0",
+        "MONGO_INITDB_DATABASE": "openflow"
         "TZ": "${TZ}"
       },
       "volumes": [
@@ -44,27 +56,13 @@
         "interval": "10s",
         "timeout": "5s",
         "retries": 10,
-        "test": "mongosh --quiet --eval 'db.runCommand({ ping: 1 }).ok' | grep 1"
+        "startPeriod": "20s",
+        "test": "sh -c \"mongosh --quiet --eval 'db.adminCommand({ ping: 1 }).ok' | grep 1\""
       }
     },
     {
-      "name": "openflow-dbsetup",
-      "image": "mongo:8.0.12",
-      "command": "mongosh --host openflow-db:27017 --eval  ' db = (new Mongo(\"openflow-db:27017\")).getDB(\"openflow\"); config = { \"_id\" : \"rs0\", \"members\" : [\n  {\n    \"_id\" : 0,\n    \"host\" : \"openflow-db:27017\"\n  }\n] }; rs.initiate(config); '\n",
-      "dependsOn": {
-        "openflow-db": {
-          "condition": "service_started"
-        }
-      }
-    },
-    {
-      "name": "openflow-mq",
+      "name": "rabbitmq",
       "image": "rabbitmq:3-management",
-      "environment": {
-        "RABBITMQ_DEFAULT_USER": "guest",
-        "RABBITMQ_DEFAULT_PASS": "${OPENFLOW_MQ_PASS}",
-        "TZ": "${TZ}"
-      },
       "volumes": [
         {
           "hostPath": "${APP_DATA_DIR}/data/rabbitmq",
@@ -74,8 +72,9 @@
       "healthCheck": {
         "interval": "10s",
         "timeout": "5s",
-        "retries": 10,
-        "test": "rabbitmq-diagnostics -q ping"
+        "retries": 12,
+        "startPeriod": "20s",
+        "test": "rabbitmq-diagnostics ping"
       }
     }
   ],
