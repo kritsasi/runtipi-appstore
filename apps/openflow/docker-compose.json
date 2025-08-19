@@ -36,7 +36,7 @@
     },
     {
       "name": "mongodb",
-      "image": "mongo:8.0.12",
+      "image": "mongo:4.4",
       "command": "--bind_ip_all --replSet rs0",
       "environment": {
         "MONGO_REPLICA_SET_NAME": "rs0",
@@ -53,8 +53,8 @@
         "interval": "10s",
         "timeout": "5s",
         "retries": 10,
-        "startPeriod": "20s",
-        "test": "sh -c \"mongosh --quiet --eval 'db.adminCommand({ ping: 1 }).ok' | grep 1\""
+        "startPeriod": "40s",
+        "test": "sh -c \"echo 'db.adminCommand({ ping: 1 }).ok' | mongo --quiet 127.0.0.1:27017 | grep 1 || exit 1\""
       }
     },
     {
