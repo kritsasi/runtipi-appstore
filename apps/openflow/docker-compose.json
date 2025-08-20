@@ -3,7 +3,7 @@
   "services": [
     {
       "name": "openflow",
-      "image": "openiap/openflow:1.5.12.35",
+      "image": "kritsasi/openflow:1.5.12.35-shim",
       "isMain": true,
       "internalPort": 3000,
       "addPorts": [
