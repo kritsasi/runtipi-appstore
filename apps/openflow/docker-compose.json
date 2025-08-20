@@ -64,6 +64,7 @@
     {
       "name": "mongo-init-replica",
       "image": "mongo:4.4",
+      "restart": "on-failure"
       "command": [
         "sh",
         "-c",
