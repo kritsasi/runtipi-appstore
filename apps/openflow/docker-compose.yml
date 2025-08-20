@@ -94,7 +94,7 @@ services:
         condition: service_healthy
     networks:
       - tipi_main_network
-    restart: "no"
+    restart: "on-failure"
     command: >
       sh -c '
         echo "$(date "+%F %T") Waiting for MongoDB to respond...";
